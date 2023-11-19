@@ -31,7 +31,7 @@ int main () {
 
     // FILE* file = fopen( "data.txt" , "w") ; 
 
-    ofstream file( "train.txt" ) ; 
+    ofstream file( "2-D_data.txt" ) ; 
 
     srand( time( 0 ) ) ; 
     int count = 1 ; 

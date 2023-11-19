@@ -53,7 +53,7 @@ bool sort_basis( pair<float , float > &a , pair<float , float > &b )
 int main () {
 
 // reading file train.txt 
-    ifstream file( "train.txt" ) ; 
+    ifstream file( "2-D_data.txt" ) ; 
 
     srand( time( 0 ) ) ; 
     int count = 1 ; 
@@ -131,7 +131,7 @@ int main () {
         }
     }
     
-    cout << "Category 0 : " << p0 << "  Category 1 : " << p1 << endl ; 
+    cout << "Category 1 : " << p0 << "  Category 2 : " << p1 << endl ; 
 
     return 0 ; 
 }
