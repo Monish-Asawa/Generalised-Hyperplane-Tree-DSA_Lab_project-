@@ -5,7 +5,7 @@
 using namespace std ;
 
 # define n 10           // dimension 
-# define list_size 200  // number of points 
+# define list_size 100  // number of points 
 
 struct data {
     float values[n] ; 
@@ -60,7 +60,7 @@ struct data calc_mean( vector<struct data> &list )
         mean.values[i] = 0 ; 
     }
 
-    for (int i = 0; i < list_size ; i++)
+    for (int i = 0; i < list.size() ; i++)
     {
         for (int x = 0; x < n ; x++)
         {
@@ -70,7 +70,7 @@ struct data calc_mean( vector<struct data> &list )
 
     for (int i = 0; i < n ; i++)
     {
-        mean.values[i] /= list_size ; 
+        mean.values[i] /= list.size() ; 
     }
     
     cout << "Mean: " ; 
@@ -104,26 +104,16 @@ void read_file( vector<struct data> &list )
     file.close() ; 
 }
 
-
-
-int main (){
-
-// reading file train.txt 
-    vector<struct data> list ;
-    read_file( list ) ;  
-
-// calculating mean vector 
+void find_pivots( vector<struct data> &list , vector<struct data> &pivots ) 
+{
     struct data mean = calc_mean( list ) ; 
 
-// calculating and storing distances of all vectors from the mean vector
     vector<pair< float , float >> distances_data ;  
-    for (int i = 0; i < list_size ; i++)
+    for (int i = 0; i < list.size() ; i++)
     {
         distances_data.push_back( make_pair( i , distance( mean , list[i] ) ) ) ; 
     }
 
-
-// indices and distances of potential pivots 
     sort( distances_data.begin() , distances_data.end() , sort_basis) ; 
     cout << distances_data[0].first << " " << distances_data[0].second << endl ;  
     cout << distances_data[1].first << " " << distances_data[1].second << endl ;  
@@ -133,15 +123,95 @@ int main (){
     cout << "\nPivot 1: " << "( " << list[i1].values[0] << " " << list[i1].values[1] << " )" << endl ; 
     cout << "Pivot 2: " << "( " << list[i2].values[0] << " " << list[i2].values[1] << " )\n" << endl ; 
 
-    for (int i = 0; i < list_size ; i++)
+
+
+    pivots.push_back( list[i1] ) ;
+    pivots.push_back( list[i2] ) ;
+
+}
+
+using groups = vector< vector<struct data> > ; 
+
+groups create_groups( vector<struct data> pivots , vector<struct data> &list ){
+
+    vector<struct data> list0 , list1 ;  
+
+
+    for (int i = 0; i < list.size() ; i++)
     {
-        if ( distance( list[i] , list[i1]) >= distance( list[i] , list[i2] ))
-        p2++ ; 
+        if ( distance( list[i] , pivots[0] ) >= distance( list[i] , pivots[1] ))
+        {
+            if ( compare( list[i] , pivots[1] ))
+            list1.push_back( list[i] ) ; 
+        }
         else 
-        p1++ ; 
+        {
+            if ( compare( list[i] , pivots[0] ))
+            list0.push_back( list[i] ) ; 
+        }
     }
     
-    cout << "Group_1 : " << p1 << "  Group_2 : " << p2 << endl ; 
+    groups group_union ;
+    group_union.push_back( list0 ) ; 
+    group_union.push_back( list1 ) ;  
+    cout << "Group_1 : " << group_union[0].size() << "  Group_2 : " << group_union[1].size() << endl ; 
+
+    return group_union ; 
+}   
+
+
+// void recursive_partition( vector<struct data> &list )
+// {
+//     if ( (list).size() > 2 )
+//     {
+//         vector<struct data> pivots ;
+//         find_pivots( list , &pivots );
+
+//         groups group1 = create_groups( pivots , list ) ;
+
+//         recursive_partition( &group1[0] ) ; 
+//         recursive_partition( &group1[1] ) ;  
+//     }
+// }
+
+int main (){
+
+// reading file train.txt 
+    vector<struct data> list ;
+    read_file( list ) ;  
+
+
+
+    vector<struct data> pivots ;
+    find_pivots( list , pivots ) ;
+
+    groups groups1 ; 
+    groups1 = create_groups( pivots , list ) ; 
+
+
+    // cout << "values of group1 " << endl ;
+    // for (int i = 0; i < groups1[0].size() ; i++)
+    // {
+    //     for (int x = 0; x < n ; x++)
+    //     {
+    //         cout << groups1[0][i].values[x] << " " ; 
+    //     }
+    //     cout << endl ; 
+    // }
+    
+
+    // vector<struct data> pivots_n0 ;
+    // find_pivots( groups1[0] , pivots_n0 ) ; 
+    
+    // groups groups2 ; 
+    // groups2 = create_groups( pivots_n0 , groups1[0] ) ; 
+
+    // vector<struct data> pivots_n1 ;
+    // find_pivots( groups1[1] , pivots_n1 ) ; 
+    
+    // groups groups3 ; 
+    // groups3 = create_groups( pivots_n1 , groups1[1] ) ; 
+
 
     return 0 ; 
 }
