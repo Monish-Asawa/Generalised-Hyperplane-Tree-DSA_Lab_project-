@@ -5,7 +5,7 @@
 using namespace std ;
 
 # define n 10           // dimension 
-# define list_size 100  // number of points 
+# define list_size 200  // number of points 
 
 struct data {
     float values[n] ; 
