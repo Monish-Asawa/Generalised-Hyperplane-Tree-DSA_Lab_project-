@@ -2,17 +2,17 @@
 #include<bits/stdc++.h>
 #include<vector> 
 // #include"tree.h"
-#include"tree.cpp"
+// #include"tree.cpp"
 
 
 using namespace std ;
 
-// # define n 10           // dimension 
+# define n 10           // dimension 
 # define dataset_size 200  // number of points 
 
-// struct data {
-//     float values[n] ; 
-// } ; 
+struct data {
+    float values[n] ; 
+} ; 
 
 // To check if two vectors are same or different 
 bool compare( struct data a , struct data b )
@@ -162,18 +162,18 @@ groups create_groups( vector<struct data> pivots , vector<struct data> &dataset 
     return group_union ; 
 }   
 
-void recursive_partition( vector<struct data> &dataset , node** root )
+void recursive_partition( vector<struct data> &dataset )
 {
     if ( (dataset).size() > 2 )
     {
         vector<struct data> pivots ; 
         find_pivots( dataset , pivots );
-        insert_node( root , pivots ) ; 
+        // insert_node( root , pivots ) ; 
 
         groups group1 = create_groups( pivots , dataset ) ;
 
-        recursive_partition( group1[0] , root ) ; 
-        recursive_partition( group1[1] , root ) ;  
+        recursive_partition( group1[0] ) ; 
+        recursive_partition( group1[1] ) ;  
     }
 }
 
@@ -187,8 +187,8 @@ int main (){
     vector<struct data> dataset ;
     read_file( dataset ) ;  
 
-    node* root = NULL ; 
-    recursive_partition( dataset , &root ) ; 
+    // node* root = NULL ; 
+    recursive_partition( dataset  ) ; 
 
     return 0 ; 
 }

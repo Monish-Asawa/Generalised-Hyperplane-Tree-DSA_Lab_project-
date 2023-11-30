@@ -81,35 +81,35 @@ Node *createnode(void){
 
 void insert(point x, Node **start){
 
-        if((*start)==NULL){
-            *start = createnode();
-            point *ref= new point;
-            *ref = x;
-            (*start)->pivot[0]=ref;
-        }
-        else if((*start)->pivot[1]==NULL){
-            point *ref= new point;
-            *ref = x;
-            (*start)->pivot[1]=ref;
-        }
-        else if((*start)->pivot[0]==NULL){
-            point *ref= new point;
-            *ref = x;
-            (*start)->pivot[0]=ref;
+    if((*start)==NULL){
+        *start = createnode();
+        point *ref= new point;
+        *ref = x;
+        (*start)->pivot[0]=ref;
+    }
+    else if((*start)->pivot[1]==NULL){
+        point *ref= new point;
+        *ref = x;
+        (*start)->pivot[1]=ref;
+    }
+    else if((*start)->pivot[0]==NULL){
+        point *ref= new point;
+        *ref = x;
+        (*start)->pivot[0]=ref;
+    }
+    else{
+
+        (*start)->isleaf=false;
+
+        if(closer(x,*((*start)->pivot[0]),*((*start)->pivot[1]),euclid_dist)){
+            insert(x,&((*start)->child[0]));
         }
         else{
-
-            (*start)->isleaf=false;
-
-            if(closer(x,*((*start)->pivot[0]),*((*start)->pivot[1]),euclid_dist)){
-                insert(x,&((*start)->child[0]));
-            }
-            else{
-                insert(x,&((*start)->child[1]));
-            }
+            insert(x,&((*start)->child[1]));
         }
+    }
 
-        return;
+    return;
 }
 
 

@@ -87,7 +87,6 @@ float manhattan_dist(data a, data b){
     return dist;
 }
 
-
 float chebyshev_dist(data a, data b){
     float dist;
     for(int i=0;i<n;i++){
