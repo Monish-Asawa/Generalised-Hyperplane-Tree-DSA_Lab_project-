@@ -9,8 +9,16 @@
 using namespace std ;
 
 double INF;
+s_data nill;
 
+
+
+// # define n 10           // dimension 
 # define dataset_size 200  // number of points 
+
+// struct data {
+//     float values[n] ; 
+// } ; 
 
 // To check if two vectors are same or different 
 bool compare( struct data a , struct data b )
@@ -27,13 +35,25 @@ bool compare( struct data a , struct data b )
 
 }
 
-bool equal(struct data d1, struct data d2){
-    for(int i=0;i<n;i++){
-        if(d1.values[i]!=d2.values[i])
-            return false;
-    }
-    return true;
-}
+
+
+// calculating distance between two vectors 
+// float distance( struct data a , struct data b )
+// {
+
+//     float dist_sqr = 0 ; 
+
+//     for (int i = 0; i < n ; i++)
+//     {
+//         float temp = a.values[i] - b.values[i] ; 
+//         temp *= temp ; 
+//         dist_sqr += temp ; 
+//     }
+
+//     float dist = sqrt( dist_sqr ) ; 
+//     return dist ; 
+
+// }
 
 // additional comparison function for sorting the distances vector 
 bool sort_basis( pair<float , float > &a , pair<float , float > &b )
@@ -181,31 +201,28 @@ s_data near_n(s_data x, float (*distance)(s_data,s_data), Node *start){
     }
 
     float dist=INF;
-    cout << "Let's Start" << endl ; 
+
     while(ref!=NULL){
 
         if(closer(x,ref->pivot1,ref->pivot2,distance)){
-            cout << "1 " ; 
+            
             if(dist > distance(x,ref->pivot1)){
-                cout << "2" << endl ; 
                 dist = distance(x,ref->pivot1);
                 min_node=ref->pivot1;
             }
-            cout << endl ; 
+
             ref= ref->lchild;
         }
         else{
-            cout << "3 " ; 
             if(dist > distance(x,ref->pivot2)){
-                cout << "4" << endl ; 
                 dist = distance(x,ref->pivot2);
                 min_node=ref->pivot2;
             }
-            cout << endl ; 
+
             ref= ref->rchild;
         }
     }
-    cout << "end" << endl ; 
+
     return min_node;
 }
 
@@ -213,49 +230,33 @@ s_data near_n(s_data x, float (*distance)(s_data,s_data), Node *start){
 
 int main (){
 
-    int A[n] = { -6 , -4 , 3 , 2 , 2 , -2 , -1 , -6 , 2 , 5 } ; 
-    int B[n] = { 5 , 4 , -5 , 0 , 2 , 3 , 8 , 2 , 1 , 1 } ; 
-
-    int C[10] = { 3 , 1 ,-5 , 7 ,2 , 9 , 10 } ; 
-
-    s_data query , n1 , no ; 
-    for (int i = 0; i < n ; i++)
-    {
-        query.values[i] = C[i] ; 
-        no.values[i] = B[i] ;
-        n1.values[i] = A[i] ;  
+    for(int i=0;i<n;i++){
+        nill.values[i] = -100;
     }
-    
-    float dist = distance( query , no ) ;
-    cout << dist << endl ; 
 
-    dist = distance( query , n1 ) ;
-    cout << dist << endl ; 
+    INF = numeric_limits<double>::max();
 
-    // INF = numeric_limits<double>::max();
+    vector<struct data> dataset ;
+    read_file( dataset ) ;  
 
-    // vector<struct data> dataset ;
-    // read_file( dataset ) ;  
+    node* root = NULL ; 
+    recursive_partition( dataset , &root ) ; 
 
-    // node* root = NULL ; 
-    // recursive_partition( dataset , &root ) ; 
+    s_data query;
 
-    // s_data query;
+    for(int i=0;i<n;i++){
+        query.values[i]=1;
+    }
 
-    // int A[10] = { 3 , 1 ,-5 , 7 ,2 , 9 , 10 } ; 
+    s_data neighbour = near_n(query, euclid_dist,root );
 
     // for(int i=0;i<n;i++){
-    //     query.values[i]= A[i] ;
+    //     cout<<neighbour.values[i]<<" ";
     // }
 
-    // s_data neighbour = near_n(query, euclid_dist,root );
-
-    // // for(int i=0;i<n;i++){
-    // //     cout<<neighbour.values[i]<<" ";
-    // // }
-    // print_point(neighbour);
-
-    cout<<"\n";
+    cout<<"Neighbour: ";
+    print_point(neighbour);
+    cout<<" Distance: "<<distance(query,neighbour)<<"\n";
 
     
 

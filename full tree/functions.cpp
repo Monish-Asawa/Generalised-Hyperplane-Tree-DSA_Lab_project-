@@ -156,6 +156,21 @@ void insert_node( node** root , data_list pivots )
 
 }
 
+void print_point(s_data x){
+    for(int i=0;i<n;i++){
+        cout<<x.values[i]<<" ";
+    }
+    return;
+}
+
+bool closer(s_data x,s_data a, s_data b, float (*distance)(s_data,s_data)){
+    if(distance(x,a)<distance(x,b))
+        return false;
+    else
+        return true;
+}
+
+
 bool equal(struct data d1, struct data d2){
     for(int i=0;i<n;i++){
         if(d1.values[i]!=d2.values[i])
@@ -218,19 +233,7 @@ void delete_point(s_data x,Node **start, s_data nill){
 }
 
 
-void print_point(s_data x){
-    for(int i=0;i<n;i++){
-        cout<<x.values[i]<<" ";
-    }
-    return;
-}
 
-bool closer(s_data x,s_data a, s_data b, float (*distance)(s_data,s_data)){
-    if(distance(x,a)<distance(x,b))
-        return false;
-    else
-        return true;
-}
 
 
 
